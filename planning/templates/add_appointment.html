@@ -1,0 +1,73 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}My Appointments{% endblock %}
+
+{% block content %}
+<div>
+	<h2 class="text-3xl font-extrabold text-gray-900">
+		Ajouter un rendez-vous
+	</h2>
+</div>
+<div class="flex items-center justify-center bg-gray-50" style="height: 80vh;display: flex;align-items: center;justify-content: center;">
+    <div class="max-w-md w-full space-y-8">
+		{% if messages %}
+        <div class="alert alert-danger">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <form method="post" class="space-y-6">
+            {% csrf_token %}
+            <div class="flex flex-col gap-5">
+				{% if request.user.roles == 'instructor' or request.user.roles == 'secretary' or request.user.roles == 'admin' %}
+					<div>
+						<label for="student" class="sr-only">Étudiant</label>
+						<select id="student" name="student" required class="w-full px-3 py-2 placeholder-gray-500 text-gray-900 focus:outline-none sm:text-sm">
+							{% for student in students %}
+								<option value="{{ student.id }}">{{ student.username }}</option>
+							{% endfor %}
+						</select>
+					</div>
+				{% endif %}
+				{% if request.user.roles == 'student' or request.user.roles == 'secretary' or request.user.roles == 'admin' %}
+					<div>
+						<label for="instructor" class="sr-only">Instructeur</label>
+						<select id="instructor" name="instructor" required class="w-full px-3 py-2 placeholder-gray-500 text-gray-900 focus:outline-none sm:text-sm">
+							{% for instructor in instructors %}
+								<option value="{{ instructor.id }}">{{ instructor.username }}</option>
+							{% endfor %}
+						</select>
+					</div>
+				{% endif %}
+                <div>
+                    <label for="date" class="sr-only">Date</label>
+                    <input id="date" name="date" type="date" required class="w-full px-3 py-2 placeholder-gray-500 text-gray-900 focus:outline-none sm:text-sm">
+                </div>
+                <div>
+                    <label for="timeStart" class="sr-only">Heure de début</label>
+                    <input id="timeStart" name="timeStart" type="time" step="3600" required class="w-full px-3 py-2 placeholder-gray-500 text-gray-900 focus:outline-none sm:text-sm">
+                </div>
+                <div>
+                    <label for="timeEnd" class="sr-only">Heure de fin</label>
+                    <input id="timeEnd" name="timeEnd" type="time" step="3600" required class="w-full px-3 py-2 placeholder-gray-500 text-gray-900 focus:outline-none sm:text-sm">
+                </div>
+                <div>
+                    <label for="location" class="sr-only">Lieu</label>
+                    <input id="location" name="location" type="text" required class="w-full px-3 py-2 placeholder-gray-500 text-gray-900 focus:outline-none sm:text-sm" placeholder="Lieu">
+                </div>
+            </div>
+            <div>
+                <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none" style="background-color: #1f2937">
+                    Ajouter
+                </button>
+            </div>
+        </form>
+        <div class="text-center">
+            <a href="{% url 'planning:appointment_list' %}" class="text-sm text-black-600 hover:text-gray-500">
+                Retour à la liste des rendez-vous
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

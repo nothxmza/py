@@ -1,0 +1,22 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gray-50">
+	<div class="max-w-md w-full space-y-8">
+		<div>
+			<h2 class="text-center text-3xl font-extrabold text-gray-900">
+				Home Page instructor
+			</h2>
+		</div>
+		<div>
+			<p class="text-center text-3xl font-extrabold text-gray-900">
+				Welcome, {{ user.username }}!
+				{{ user.roles}}
+				{{user.hours_paid}}
+			</p>
+		</div>
+	</div>
+</div>
+{% endblock %}

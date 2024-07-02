@@ -1,0 +1,13 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<h1>instructor liste</h1>
+
+{% for instructor in instructors %}
+    <a href="{% url 'main:instructor_details' instructor.id %}">{{ instructor.username }}</a>
+{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}Setting{% endblock %}
+
+{% block content %}
+<h2 class="text-black-600 text-4xl mb-20">Setting Page</h2>
+<div class="flex">
+  <div class="w-full">
+    <table class="divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Username
+          </th>
+		  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+			Role
+		  </th>
+		  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+			hour_paid
+		  </th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        {% for user in users %}
+          {% if user != request.user %}
+            <tr>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                {{ user.username }}
+              </td>
+			  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+				{{ user.roles }}
+			  </td>
+			  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+				{{ user.hours_paid }}
+			  </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                <div class="flex gap-4">
+                  <a href="{% url 'main:update_user' user.id %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gray-600 hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-grey-500">
+                    Edit
+                  </a>
+                  <form action="{% url 'main:delete_user' user.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="flex gap-4">
+                      <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                        Delete
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          {% endif %}
+        {% endfor %}
+      </tbody>
+      <tfoot class="bg-gray-50">
+        <tr>
+          <td  class="px-6 py-3 text-right">
+            <a href="{% url 'auth:register' %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white  hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" style="background-color: #1f2537;">
+              Add User
+            </a>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+{% endblock %}
